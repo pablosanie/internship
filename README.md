@@ -1,11 +1,13 @@
 # internship
 
-
-```mermaid
 ---
 config:
   layout: elk
 ---
+
+
+```mermaid
+
 graph TB
     subgraph External["Внешние источники данных"]
         UARTSource["UART источник<br/>57600/115200 baud<br/>8N1"]
