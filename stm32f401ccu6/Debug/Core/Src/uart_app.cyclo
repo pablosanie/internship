@@ -1,0 +1,3 @@
+../Core/Src/uart_app.c:9:6:UART_App_Init	1
+../Core/Src/uart_app.c:17:10:UART_App_GetByteCount	1
+../Core/Src/uart_app.c:26:6:HAL_UART_RxCpltCallback	2
