@@ -123,19 +123,27 @@ int main(void)
       uint8_t byte;
       while(UART_App_ReadByte(&byte)){
           HAL_UART_Transmit(&huart1, &byte, 1, HAL_MAX_DELAY);
-
           if (byte == '\r')
           {
               char dbg_msg[64];
-              int dbg_len = sprintf(dbg_msg, "\r\n[rx_byte_count=%lu, overflow=%lu]\r\n",
-                                     (unsigned long)UART_App_GetByteCount(),
-                                     (unsigned long)UART_App_GetOverflowCount());
+              unsigned long gbc = (unsigned long)UART_App_GetByteCount();
+              unsigned long goc = (unsigned long)UART_App_GetOverflowCount();
+              unsigned long spd = (unsigned long)UART_App_GetSpeed();
+              int dbg_len = sprintf(dbg_msg, "\r\n[rx_byte_count=%lu, overflow=%lu, speed=%lu B/s]\r\n",
+                                     gbc,
+                                     goc,
+									 spd);
               HAL_UART_Transmit(&huart1, (uint8_t *)dbg_msg, dbg_len, HAL_MAX_DELAY);
+//              uint32_t maxi = 4294967295;
+//              char dbg_msg2[64];
+//              int rnd = sprintf(dbg_msg2, "\r\nMax of this type: %lu\r\n", maxi);
+//              HAL_UART_Transmit(&huart1, (uint8_t *)dbg_msg2, rnd, HAL_MAX_DELAY);
           }
+
       }
 
-      //HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-      //HAL_Delay(500);
+//      HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+//      HAL_Delay(5000);
 
       /* USER CODE BEGIN 3 */
   }

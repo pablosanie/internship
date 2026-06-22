@@ -6,6 +6,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+
+
+
 /* Запускает приём первого байта по прерыванию.
    Вызывается один раз из main(), после MX_USART1_UART_Init(). */
 void UART_App_Init(void);
@@ -16,5 +19,7 @@ bool UART_App_ReadByte(uint8_t *out_byte);
 uint32_t UART_App_GetByteCount(void);
 
 uint32_t UART_App_GetOverflowCount(void);
+
+uint32_t UART_App_GetSpeed(void);
 
 #endif /* UART_APP_H */
