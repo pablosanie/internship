@@ -23,7 +23,7 @@
 #include "usart.h"
 #include "gpio.h"
 #include "uart_app.h"
-
+#include <stdio.h>
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -101,16 +101,43 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+//  while (1)
+//  {
+//    /* USER CODE END WHILE */
+//	uint8_t byte;
+//	while(UART_App_ReadByte(&byte)){
+//		HAL_UART_Transmit(&huart1, &byte, 1, HAL_MAX_DELAY);
+//	}
+//
+//	HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+//    HAL_Delay(500);
+////
+////    uint8_t tick_msg[] = "tick\r\n";
+////    HAL_UART_Transmit(&huart1, tick_msg, sizeof(tick_msg) - 1, HAL_MAX_DELAY);
+//
+//    /* USER CODE BEGIN 3 */
+//  }
   while (1)
   {
-    /* USER CODE END WHILE */
-	HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-    HAL_Delay(500);
-//
-//    uint8_t tick_msg[] = "tick\r\n";
-//    HAL_UART_Transmit(&huart1, tick_msg, sizeof(tick_msg) - 1, HAL_MAX_DELAY);
+      /* USER CODE END WHILE */
+      uint8_t byte;
+      while(UART_App_ReadByte(&byte)){
+          HAL_UART_Transmit(&huart1, &byte, 1, HAL_MAX_DELAY);
 
-    /* USER CODE BEGIN 3 */
+          if (byte == '\r')
+          {
+              char dbg_msg[64];
+              int dbg_len = sprintf(dbg_msg, "\r\n[rx_byte_count=%lu, overflow=%lu]\r\n",
+                                     (unsigned long)UART_App_GetByteCount(),
+                                     (unsigned long)UART_App_GetOverflowCount());
+              HAL_UART_Transmit(&huart1, (uint8_t *)dbg_msg, dbg_len, HAL_MAX_DELAY);
+          }
+      }
+
+      //HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+      //HAL_Delay(500);
+
+      /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
 }
