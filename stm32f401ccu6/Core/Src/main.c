@@ -129,10 +129,12 @@ int main(void)
               unsigned long gbc = (unsigned long)UART_App_GetByteCount();
               unsigned long goc = (unsigned long)UART_App_GetOverflowCount();
               unsigned long spd = (unsigned long)UART_App_GetSpeed();
-              int dbg_len = sprintf(dbg_msg, "\r\n[rx_byte_count=%lu, overflow=%lu, speed=%lu B/s]\r\n",
+              unsigned long tlp = (unsigned long)UART_App_GetTimeFromLastByte();
+              int dbg_len = sprintf(dbg_msg, "\r\n[rx_byte_count=%lu, overflow=%lu, speed=%lu B/s, pause=%lu s]\r\n",
                                      gbc,
                                      goc,
-									 spd);
+									 spd,
+									 tlp);
               HAL_UART_Transmit(&huart1, (uint8_t *)dbg_msg, dbg_len, HAL_MAX_DELAY);
 //              uint32_t maxi = 4294967295;
 //              char dbg_msg2[64];

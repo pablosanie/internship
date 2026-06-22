@@ -22,4 +22,6 @@ uint32_t UART_App_GetOverflowCount(void);
 
 uint32_t UART_App_GetSpeed(void);
 
+uint32_t UART_App_GetTimeFromLastByte(void);
+
 #endif /* UART_APP_H */

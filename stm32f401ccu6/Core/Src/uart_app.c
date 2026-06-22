@@ -8,6 +8,8 @@ static RingBuffer_t rx_ring_buffer;
 /* Счётчик принятых байт — пригодится в Дне 4 (статистика) */
 static volatile uint32_t rx_byte_count = 0;
 
+//static volatile uint32_t last_byte_tick = 0;
+
 void UART_App_Init(void)
 {
     rx_byte_count = 0;
@@ -55,4 +57,22 @@ uint32_t UART_App_GetSpeed(void){
 	return last_speed;
 
 }
+//uint32_t UART_AppGetTimeFromLastByte(void){
+//	return HAL_GetTick() - last_byte_tick;
+//}
+//
+//bool UART_App_TimeOut(uint32_t tms){
+//	return UART_AppGetTimeFromLastByte() >= tms;
+//}
 
+uint32_t UART_App_GetTimeFromLastByte(void){
+	static uint32_t last_count = 0;
+	static uint32_t last_tick = 0;
+	uint32_t now = HAL_GetTick();
+	uint32_t tmp = last_tick;
+	if(rx_byte_count>=last_count+1){
+		last_tick = now;
+		last_count = rx_byte_count;
+	}
+	return (now - tmp)/1000;
+}

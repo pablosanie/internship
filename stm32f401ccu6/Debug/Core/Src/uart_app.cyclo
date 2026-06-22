@@ -1,6 +1,7 @@
-../Core/Src/uart_app.c:11:6:UART_App_Init	1
-../Core/Src/uart_app.c:19:6:UART_App_ReadByte	1
-../Core/Src/uart_app.c:23:10:UART_App_GetByteCount	1
-../Core/Src/uart_app.c:28:10:UART_App_GetOverflowCount	1
-../Core/Src/uart_app.c:32:6:HAL_UART_RxCpltCallback	2
-../Core/Src/uart_app.c:42:10:UART_App_GetSpeed	2
+../Core/Src/uart_app.c:13:6:UART_App_Init	1
+../Core/Src/uart_app.c:21:6:UART_App_ReadByte	1
+../Core/Src/uart_app.c:25:10:UART_App_GetByteCount	1
+../Core/Src/uart_app.c:30:10:UART_App_GetOverflowCount	1
+../Core/Src/uart_app.c:34:6:HAL_UART_RxCpltCallback	2
+../Core/Src/uart_app.c:44:10:UART_App_GetSpeed	2
+../Core/Src/uart_app.c:68:10:UART_App_GetTimeFromLastByte	2
