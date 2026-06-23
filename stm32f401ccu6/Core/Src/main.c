@@ -97,6 +97,7 @@ int main(void)
 //  uint8_t startup_msg[] = "UART test: device started\r\n";
 //  HAL_UART_Transmit(&huart1, startup_msg, sizeof(startup_msg) - 1, HAL_MAX_DELAY);
   UART_App_Init();
+  //uint32_t last_stat_tick = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -123,13 +124,13 @@ int main(void)
       uint8_t byte;
       while(UART_App_ReadByte(&byte)){
           HAL_UART_Transmit(&huart1, &byte, 1, HAL_MAX_DELAY);
+          unsigned long tlp = (unsigned long)UART_App_GetTimeFromLastByte();
           if (byte == '\r')
           {
               char dbg_msg[64];
               unsigned long gbc = (unsigned long)UART_App_GetByteCount();
               unsigned long goc = (unsigned long)UART_App_GetOverflowCount();
               unsigned long spd = (unsigned long)UART_App_GetSpeed();
-              unsigned long tlp = (unsigned long)UART_App_GetTimeFromLastByte();
               int dbg_len = sprintf(dbg_msg, "\r\n[rx_byte_count=%lu, overflow=%lu, speed=%lu B/s, pause=%lu s]\r\n",
                                      gbc,
                                      goc,

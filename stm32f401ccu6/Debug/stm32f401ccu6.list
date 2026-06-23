@@ -27,25 +27,25 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
  11 .ARM.attributes 00000030  00000000  00000000  0000605c  2**0
                   CONTENTS, READONLY
- 12 .debug_info   0000b9d2  00000000  00000000  0000608c  2**0
+ 12 .debug_info   0000b9e0  00000000  00000000  0000608c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 00002247  00000000  00000000  00011a5e  2**0
+ 13 .debug_abbrev 00002246  00000000  00000000  00011a6c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 000009d0  00000000  00000000  00013ca8  2**3
+ 14 .debug_aranges 000009d0  00000000  00000000  00013cb8  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_rnglists 00000767  00000000  00000000  00014678  2**0
+ 15 .debug_rnglists 00000767  00000000  00000000  00014688  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  000164e0  00000000  00000000  00014ddf  2**0
+ 16 .debug_macro  000164e0  00000000  00000000  00014def  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0000c653  00000000  00000000  0002b2bf  2**0
+ 17 .debug_line   0000c655  00000000  00000000  0002b2cf  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    00086f52  00000000  00000000  00037912  2**0
+ 18 .debug_str    00086f52  00000000  00000000  00037924  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  000be864  2**0
+ 19 .comment      00000043  00000000  00000000  000be876  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00002988  00000000  00000000  000be8a8  2**2
+ 20 .debug_frame  00002988  00000000  00000000  000be8bc  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 00000056  00000000  00000000  000c1230  2**0
+ 21 .debug_line_str 00000056  00000000  00000000  000c1244  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -762,32 +762,32 @@ int main(void)
  80007b0:	2201      	movs	r2, #1
  80007b2:	4817      	ldr	r0, [pc, #92]	@ (8000810 <main+0x8c>)
  80007b4:	f002 f85e 	bl	8002874 <HAL_UART_Transmit>
+          unsigned long tlp = (unsigned long)UART_App_GetTimeFromLastByte();
+ 80007b8:	f000 faa2 	bl	8000d00 <UART_App_GetTimeFromLastByte>
+ 80007bc:	6578      	str	r0, [r7, #84]	@ 0x54
           if (byte == '\r')
- 80007b8:	f897 3043 	ldrb.w	r3, [r7, #67]	@ 0x43
- 80007bc:	2b0d      	cmp	r3, #13
- 80007be:	d11e      	bne.n	80007fe <main+0x7a>
+ 80007be:	f897 3043 	ldrb.w	r3, [r7, #67]	@ 0x43
+ 80007c2:	2b0d      	cmp	r3, #13
+ 80007c4:	d11b      	bne.n	80007fe <main+0x7a>
           {
               char dbg_msg[64];
               unsigned long gbc = (unsigned long)UART_App_GetByteCount();
- 80007c0:	f000 fa34 	bl	8000c2c <UART_App_GetByteCount>
- 80007c4:	6578      	str	r0, [r7, #84]	@ 0x54
-              unsigned long goc = (unsigned long)UART_App_GetOverflowCount();
- 80007c6:	f000 fa3d 	bl	8000c44 <UART_App_GetOverflowCount>
+ 80007c6:	f000 fa31 	bl	8000c2c <UART_App_GetByteCount>
  80007ca:	6538      	str	r0, [r7, #80]	@ 0x50
-              unsigned long spd = (unsigned long)UART_App_GetSpeed();
- 80007cc:	f000 fa6e 	bl	8000cac <UART_App_GetSpeed>
+              unsigned long goc = (unsigned long)UART_App_GetOverflowCount();
+ 80007cc:	f000 fa3a 	bl	8000c44 <UART_App_GetOverflowCount>
  80007d0:	64f8      	str	r0, [r7, #76]	@ 0x4c
-              unsigned long tlp = (unsigned long)UART_App_GetTimeFromLastByte();
- 80007d2:	f000 fa95 	bl	8000d00 <UART_App_GetTimeFromLastByte>
+              unsigned long spd = (unsigned long)UART_App_GetSpeed();
+ 80007d2:	f000 fa6b 	bl	8000cac <UART_App_GetSpeed>
  80007d6:	64b8      	str	r0, [r7, #72]	@ 0x48
               int dbg_len = sprintf(dbg_msg, "\r\n[rx_byte_count=%lu, overflow=%lu, speed=%lu B/s, pause=%lu s]\r\n",
  80007d8:	4638      	mov	r0, r7
- 80007da:	6cbb      	ldr	r3, [r7, #72]	@ 0x48
+ 80007da:	6d7b      	ldr	r3, [r7, #84]	@ 0x54
  80007dc:	9301      	str	r3, [sp, #4]
- 80007de:	6cfb      	ldr	r3, [r7, #76]	@ 0x4c
+ 80007de:	6cbb      	ldr	r3, [r7, #72]	@ 0x48
  80007e0:	9300      	str	r3, [sp, #0]
- 80007e2:	6d3b      	ldr	r3, [r7, #80]	@ 0x50
- 80007e4:	6d7a      	ldr	r2, [r7, #84]	@ 0x54
+ 80007e2:	6cfb      	ldr	r3, [r7, #76]	@ 0x4c
+ 80007e4:	6d3a      	ldr	r2, [r7, #80]	@ 0x50
  80007e6:	490b      	ldr	r1, [pc, #44]	@ (8000814 <main+0x90>)
  80007e8:	f003 f860 	bl	80038ac <siprintf>
  80007ec:	6478      	str	r0, [r7, #68]	@ 0x44
