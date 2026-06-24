@@ -34,6 +34,9 @@ public:
     QHBoxLayout *horizontalLayout;
     QLabel *label;
     QLCDNumber *lcdNumber;
+    QHBoxLayout *horizontalLayout_9;
+    QLabel *label_6;
+    QLCDNumber *lcdNumber_3;
     QHBoxLayout *horizontalLayout_8;
     QLabel *label_5;
     QLCDNumber *lcdNumber_2;
@@ -91,6 +94,26 @@ public:
 
 
         verticalLayout->addLayout(horizontalLayout);
+
+        horizontalLayout_9 = new QHBoxLayout();
+        horizontalLayout_9->setObjectName("horizontalLayout_9");
+        label_6 = new QLabel(Widget);
+        label_6->setObjectName("label_6");
+
+        horizontalLayout_9->addWidget(label_6);
+
+        lcdNumber_3 = new QLCDNumber(Widget);
+        lcdNumber_3->setObjectName("lcdNumber_3");
+        lcdNumber_3->setTabletTracking(false);
+        lcdNumber_3->setAutoFillBackground(false);
+        lcdNumber_3->setFrameShadow(QFrame::Shadow::Raised);
+        lcdNumber_3->setDigitCount(10);
+        lcdNumber_3->setSegmentStyle(QLCDNumber::SegmentStyle::Filled);
+
+        horizontalLayout_9->addWidget(lcdNumber_3);
+
+
+        verticalLayout->addLayout(horizontalLayout_9);
 
         horizontalLayout_8 = new QHBoxLayout();
         horizontalLayout_8->setObjectName("horizontalLayout_8");
@@ -249,8 +272,9 @@ public:
     void retranslateUi(QWidget *Widget)
     {
         Widget->setWindowTitle(QCoreApplication::translate("Widget", "Widget", nullptr));
-        label->setText(QCoreApplication::translate("Widget", "\320\237\320\276\321\201\321\202\321\203\320\277\320\270\320\273\320\276 \320\261\320\260\320\271\321\202:", nullptr));
-        label_5->setText(QCoreApplication::translate("Widget", "\320\237\320\265\321\200\320\265\320\277\320\276\320\273\320\275\320\265\320\275\320\276 \320\275\320\260:", nullptr));
+        label->setText(QCoreApplication::translate("Widget", "\320\236\321\202\320\277\321\200\320\260\320\262\320\273\320\265\320\275\320\276 \320\261\320\260\320\271\321\202:", nullptr));
+        label_6->setText(QCoreApplication::translate("Widget", "\320\237\321\200\320\270\320\275\321\217\321\202\320\276 \320\261\320\260\320\271\321\202:", nullptr));
+        label_5->setText(QCoreApplication::translate("Widget", "\320\237\320\276\321\202\320\265\321\200\321\217\320\275\320\276:", nullptr));
         sendButton->setText(QCoreApplication::translate("Widget", "\320\236\321\202\320\277\321\200\320\260\320\262\320\270\321\202\321\214", nullptr));
         generatorButton->setText(QCoreApplication::translate("Widget", "\320\222\320\272\320\273\321\216\321\207\320\270\321\202\321\214 \320\263\320\265\320\275\320\265\321\200\320\260\321\202\320\276\321\200 (1 \320\261\320\260\320\271\321\202)", nullptr));
         label_3->setText(QCoreApplication::translate("Widget", "\320\237\320\265\321\200\320\270\320\276\320\264 (\320\274\321\201)", nullptr));

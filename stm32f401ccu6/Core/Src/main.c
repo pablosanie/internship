@@ -169,9 +169,10 @@ int main(void)
           unsigned long goc = (unsigned long)UART_App_GetOverflowCount();
           unsigned long spd = (unsigned long)UART_App_GetSpeed();
           unsigned long tlp = (unsigned long)UART_App_GetTimeFromLastByte();
+          unsigned long buf = (unsigned long)UART_App_GetBufferedCount();
           int len = sprintf(stat,
-              "[rx_byte_count=%lu,overflow=%lu,speed=%lu,time=%lu]\r\n",
-              gbc, goc, spd, tlp);
+              "[rx_byte_count=%lu,overflow=%lu,speed=%lu,time=%lu,buffered=%lu]\r\n",
+              gbc, goc, spd, tlp, buf);
           HAL_UART_Transmit(&huart1, (uint8_t *)stat, len, HAL_MAX_DELAY);
       }
 

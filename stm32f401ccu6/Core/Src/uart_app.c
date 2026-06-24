@@ -7,6 +7,7 @@ static RingBuffer_t rx_ring_buffer;
 
 /* Счётчик принятых байт — пригодится в Дне 4 (статистика) */
 static volatile uint32_t rx_byte_count = 0;
+static volatile uint32_t rx_buffered_count = 0;
 
 //static volatile uint32_t last_byte_tick = 0;
 
@@ -36,7 +37,10 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     if (huart->Instance == USART1)
     {
     	rx_byte_count++;
-        RingBuffer_Put(&rx_ring_buffer, rx_byte);
+    	if (RingBuffer_Put(&rx_ring_buffer, rx_byte))
+    	        {
+    	            rx_buffered_count++;  // только если байт реально попал в буфер
+    	        }
         HAL_UART_Receive_IT(&huart1, &rx_byte, 1);
     }
 }
@@ -75,4 +79,8 @@ uint32_t UART_App_GetTimeFromLastByte(void){
 		last_count = rx_byte_count;
 	}
 	return (now - tmp)/1000;
+}
+uint32_t UART_App_GetBufferedCount(void)
+{
+    return rx_buffered_count;
 }

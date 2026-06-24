@@ -23,6 +23,9 @@ Widget::Widget(QWidget *parent)
     ui->lcdNumber_2->setStyleSheet(
         "QLCDNumber { background-color: black; color: red; }"
         );
+    ui->lcdNumber_3->setStyleSheet(
+        "QLCDNumber { background-color: black; color: red; }"
+        );
     ui->periodBox->setMinimum(10);
     ui->periodBox->setValue(100);
     ui->perBox->setMinimum(0);
@@ -216,14 +219,18 @@ void Widget::parseData(const QString &line)
     };
 
     long byteCount = extract("rx_byte_count=");
-    long speed     = extract("speed=");
     long overflow  = extract("overflow=");
+    long speed     = extract("speed=");
+    long buffered  = extract("buffered=");
 
     if (byteCount >= 0)
         ui->lcdNumber->display((double)byteCount);
 
     if (overflow >= 0)
         ui->lcdNumber_2->display((double)overflow);
+
+    if (buffered >= 0)
+        ui->lcdNumber_3->display((double)buffered);
 
     if (speed >= 0)
         m_series->append(m_timeCounter, speed);
