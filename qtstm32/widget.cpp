@@ -11,12 +11,16 @@ Widget::Widget(QWidget *parent)
     , m_generatorTimer(new QTimer(this))
     , m_timeCounter(0)
     , m_period(100)
-    , m_percent(0)
+    , m_percent(50)
     , m_lastByteCount(0)
+    , m_size(50)
 
 {
     ui->setupUi(this);
     ui->lcdNumber->setStyleSheet(
+        "QLCDNumber { background-color: black; color: red; }"
+        );
+    ui->lcdNumber_2->setStyleSheet(
         "QLCDNumber { background-color: black; color: red; }"
         );
     ui->periodBox->setMinimum(10);
@@ -24,6 +28,10 @@ Widget::Widget(QWidget *parent)
     ui->perBox->setMinimum(0);
     ui->perBox->setMaximum(100);
     ui->perBox->setValue(50);
+
+    ui->sizeBox->setMinimum(0);
+    ui->sizeBox->setMaximum(4096);
+    ui->sizeBox->setValue(50);
 
     populatePorts();
     setupChart();
@@ -36,9 +44,11 @@ Widget::Widget(QWidget *parent)
     connect(ui->sendButton, &QPushButton::clicked,
             this, &Widget::onSendClicked);
     connect(ui->generatorButton, &QPushButton::clicked, this, &Widget::onGeneratorClicked);
+    connect(ui->stringGeneratorButton, &QPushButton::clicked, this, &Widget::onStringGeneratorClicked);
     connect(m_generatorTimer, &QTimer::timeout, this, &Widget::onGeneratorTimer);
     connect(ui->periodBox, &QSpinBox::valueChanged, this, &Widget::onperiodBoxChanged);
     connect(ui->perBox, &QSpinBox::valueChanged, this, &Widget::onpercentBoxChanged);
+    connect(ui->sizeBox, &QSpinBox::valueChanged, this, &Widget::onsizeBoxChanged);
 }
 
 Widget::~Widget()
@@ -107,6 +117,9 @@ void Widget::onperiodBoxChanged(int value){
 void Widget::onpercentBoxChanged(int value){
     m_percent = value;
 }
+void Widget::onsizeBoxChanged(int value){
+    m_size = value;
+}
 void Widget::onGeneratorClicked(){ // включение/отключение генератора
     if (!m_serial->isOpen()){
         qDebug() << "Порт не открыт";
@@ -114,7 +127,7 @@ void Widget::onGeneratorClicked(){ // включение/отключение г
     }
     if(m_generatorTimer->isActive()){
         m_generatorTimer->stop();
-        ui->generatorButton->setText("Включить генератор");
+        ui->generatorButton->setText("Включить генератор (1 байт)");
     }
     else{
         qDebug() << "Запуск генератора с периодом:" << m_period;
@@ -122,16 +135,25 @@ void Widget::onGeneratorClicked(){ // включение/отключение г
         ui->generatorButton->setText("Отключить генератор");
     }
 }
-// void Widget::onStringGeneratorClicked(){
-
-// }
+void Widget::onStringGeneratorClicked(){
+    if (!m_serial->isOpen()){
+        qDebug() << "Порт не открыт";
+        return;
+    }
+    QByteArray packet;
+    packet.resize(m_size);
+    for (int i = 0; i < m_size; i++){
+        packet[i] = (char)QRandomGenerator::global()->bounded(33, 127);
+    }
+    m_serial->write(packet);
+}
 void Widget::onGeneratorTimer(){
     if (!m_serial->isOpen())
     {
         qDebug() << "Порт не открыт";
         if(m_generatorTimer->isActive()){
             m_generatorTimer->stop();
-            ui->generatorButton->setText("Включить генератор");
+            ui->generatorButton->setText("Включить генератор (1 байт)");
         }
         return;
     }
@@ -195,14 +217,16 @@ void Widget::parseData(const QString &line)
 
     long byteCount = extract("rx_byte_count=");
     long speed     = extract("speed=");
+    long overflow  = extract("overflow=");
 
     if (byteCount >= 0)
         ui->lcdNumber->display((double)byteCount);
 
+    if (overflow >= 0)
+        ui->lcdNumber_2->display((double)overflow);
+
     if (speed >= 0)
-    {
         m_series->append(m_timeCounter, speed);
-    }
 }
 void Widget::onSendClicked()
 {

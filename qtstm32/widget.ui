@@ -21,7 +21,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Поступило байт:</string>
+          <string>Отправлено байт:</string>
          </property>
         </widget>
        </item>
@@ -35,6 +35,39 @@
          </property>
          <property name="frameShadow">
           <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <property name="digitCount">
+          <number>10</number>
+         </property>
+         <property name="segmentStyle">
+          <enum>QLCDNumber::SegmentStyle::Filled</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_8">
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Потеряно:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLCDNumber" name="lcdNumber_2">
+         <property name="tabletTracking">
+          <bool>false</bool>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <property name="digitCount">
+          <number>10</number>
          </property>
          <property name="segmentStyle">
           <enum>QLCDNumber::SegmentStyle::Filled</enum>
@@ -71,53 +104,108 @@
       </layout>
      </item>
      <item>
-      <widget class="QPushButton" name="generatorButton">
-       <property name="text">
-        <string>Включить генератор</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_6">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="generatorButton">
+         <property name="text">
+          <string>Включить генератор (1 байт)</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
          <item>
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>Период (мс)</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>Период (мс)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="periodBox">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>5000</number>
+             </property>
+             <property name="value">
+              <number>100</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
-          <widget class="QSpinBox" name="periodBox">
-           <property name="minimum">
-            <number>1</number>
-           </property>
-           <property name="maximum">
-            <number>5000</number>
-           </property>
-           <property name="value">
-            <number>100</number>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>% отправки</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="perBox">
+             <property name="maximum">
+              <number>100</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>
+      </layout>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Orientation::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <widget class="QPushButton" name="stringGeneratorButton">
+         <property name="text">
+          <string>Сгенерировать и отправить пакет</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
-          <widget class="QLabel" name="label_2">
+          <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>% отправки</string>
+            <string>Размер</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="perBox">
-           <property name="maximum">
-            <number>100</number>
-           </property>
-          </widget>
+          <widget class="QSpinBox" name="sizeBox"/>
          </item>
         </layout>
        </item>

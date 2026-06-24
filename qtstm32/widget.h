@@ -35,6 +35,7 @@ private:
     qint64 m_timeCounter;
     int m_period;
     int m_percent;
+    qint32 m_size;
     void populatePorts();
     void setupChart();
     void parseData(const QString &line);
@@ -44,9 +45,10 @@ private slots:
     void onTimer();
     void onSendClicked();
     void onGeneratorClicked();
-    //void onStringGeneratorClicked();
+    void onStringGeneratorClicked();
     void onGeneratorTimer();
     void onperiodBoxChanged(int value);
     void onpercentBoxChanged(int value);
+    void onsizeBoxChanged(int value);
 };
 #endif // WIDGET_H
