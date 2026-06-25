@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=UART Analyzer
+Exec=qtstm32main
+Icon=qtstm32main
+Type=Application
+Categories=Utility;

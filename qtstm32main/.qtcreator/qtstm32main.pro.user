@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 19.0.2, 2026-06-25T18:20:38. -->
+<!-- Written by QtCreator 19.0.2, 2026-06-25T19:14:32. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -97,7 +97,7 @@
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop Qt 6.11.1</value>
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop Qt 6.11.1</value>
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">qt.qt6.6111.linux_gcc_64_kit</value>
-   <value type="qlonglong" key="ProjectExplorer.Target.ActiveBuildConfiguration">0</value>
+   <value type="qlonglong" key="ProjectExplorer.Target.ActiveBuildConfiguration">1</value>
    <value type="qlonglong" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
    <value type="qlonglong" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.0">
@@ -241,11 +241,12 @@
      <value type="bool" key="PE.EnvironmentAspect.PrintOnRun">false</value>
      <value type="QString" key="PerfRecordArgsId">-e cpu-cycles --call-graph dwarf,4096 -F 250</value>
      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
-     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.CustomExecutableRunConfiguration</value>
-     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey"></value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:</value>
+     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/abu/REPO/internship/qtstm32main/qtstm32main.pro</value>
      <value type="bool" key="ProjectExplorer.RunConfiguration.Customized">false</value>
      <value type="QString" key="ProjectExplorer.RunConfiguration.UniqueId"></value>
      <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
+     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
      <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
      <value type="QString" key="RunConfiguration.WorkingDirectory.default">%{RunConfig:Executable:Path}</value>
     </valuemap>
