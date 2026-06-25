@@ -54,6 +54,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->periodBox, &QSpinBox::valueChanged, this, &MainWindow::onperiodBoxChanged);
     connect(ui->perBox, &QSpinBox::valueChanged, this, &MainWindow::onpercentBoxChanged);
     connect(ui->sizeBox, &QSpinBox::valueChanged, this, &MainWindow::onsizeBoxChanged);
+
+    addToolBar(Qt::TopToolBarArea, createToolBar());
 }
 
 MainWindow::~MainWindow()
@@ -104,8 +106,8 @@ void MainWindow::setupChart(){ // график
     ui->graph->setRenderHint(QPainter::Antialiasing);
 
     m_seriesRx = new QLineSeries();
-    m_series->setName("Принято STM32 (байт/сек)");
-    m_seriesRx->setName("Отправлено Qt (байт/сек)");
+    m_series->setName("Скорость приёма данных STM32 (байт/сек)");
+    m_seriesRx->setName("Скорость передачи данных от Qt (байт/сек)");
     m_chart->addSeries(m_seriesRx);
     m_seriesRx->attachAxis(axisX);
     m_seriesRx->attachAxis(axisY);
@@ -130,21 +132,25 @@ void MainWindow::onsizeBoxChanged(int value){
 void MainWindow::onGeneratorClicked(){ // включение/отключение генератора
     if (!m_uart->isConnected()){
         qDebug() << "Порт не открыт";
+        QMessageBox::warning(0, "Предупреждение", "Порт не открыт!");
         return;
     }
     if(m_generatorTimer->isActive()){
         m_generatorTimer->stop();
         ui->generatorButton->setText("Включить генератор (1 байт)");
+        m_generatorAction->setText("Генератор (включить)");
     }
     else{
         qDebug() << "Запуск генератора с периодом:" << m_period;
         m_generatorTimer->start(m_period);
         ui->generatorButton->setText("Отключить генератор");
+        m_generatorAction->setText("Генератор (отключить)");
     }
 }
 void MainWindow::onStringGeneratorClicked(){
     if (!m_uart->isConnected()){
         qDebug() << "Порт не открыт";
+        QMessageBox::warning(0, "Предупреждение", "Порт не открыт!");
         return;
     }
     QByteArray packet;
@@ -159,6 +165,7 @@ void MainWindow::onGeneratorTimer(){
     if (!m_uart->isConnected())
     {
         qDebug() << "Порт не открыт";
+        QMessageBox::warning(0, "Предупреждение", "Порт не открыт!");
         if(m_generatorTimer->isActive()){
             m_generatorTimer->stop();
             ui->generatorButton->setText("Включить генератор (1 байт)");
@@ -177,18 +184,21 @@ void MainWindow::onConnectClicked(){
         m_uart->disconnect();
         m_timer->stop();
         ui->connectButton->setText("Подключить");
+        m_connectAction->setText("Подключить");
         return;
     }
     QString port = ui->portComboBox->currentText();
     if (m_uart->connect(port, 115200))
     {
         ui->connectButton->setText("Отключить");
+        m_connectAction->setText("Отключить");
         m_timer->start(1000);
         qDebug() << "Порт открыт:" << port;
     }
     else
     {
         qDebug() << "Ошибка подключения:" << m_uart->getSerial()->errorString();
+        QMessageBox::warning(0, "Предупреждение", "Ошибка подключения\n" + m_uart->getSerial()->errorString());
     }
 }
 
@@ -215,6 +225,7 @@ void MainWindow::onSendClicked()
     if (!m_uart->isConnected())
     {
         qDebug() << "Порт не открыт";
+        QMessageBox::warning(0, "Предупреждение", "Порт не открыт!");
         return;
     }
 
@@ -231,9 +242,9 @@ void MainWindow::onChartContextMenu(const QPoint &pos)
 {
     QMenu menu(this);
 
-    QAction *action1000 = menu.addAction("Масштаб: 0 — 1000 байт/сек");
-    QAction *action4000 = menu.addAction("Масштаб: 0 — 4000 байт/сек");
-    QAction *action12000 = menu.addAction("Масштаб: 0 — 12000 байт/сек");
+    QAction *action1000 = menu.addAction("Масштаб: 1000 байт/сек");
+    QAction *action4000 = menu.addAction("Масштаб: 4000 байт/сек");
+    QAction *action12000 = menu.addAction("Масштаб: 12000 байт/сек");
 
     QAction *selected = menu.exec(ui->graph->mapToGlobal(pos));
 
@@ -247,4 +258,31 @@ void MainWindow::onChartContextMenu(const QPoint &pos)
         axisY->setRange(0, 4000);
     else if (selected == action12000)
         axisY->setRange(0, 12000);
+}
+
+QToolBar* MainWindow::createToolBar(){
+    QToolBar *ptb = new QToolBar("Toolbar");
+    m_connectAction = ptb->addAction("Подключить", this, &MainWindow::onConnectClicked);
+    m_generatorAction = ptb->addAction("Генератор (включить)", this, &MainWindow::onGeneratorClicked);
+    ptb->addAction("Отправить пакет", this, &MainWindow::onStringGeneratorClicked);
+    ptb->addSeparator();
+    QComboBox *scaleBox = new QComboBox(ptb);
+    scaleBox->addItem("Масштаб: 1000 байт/сек");
+    scaleBox->addItem("Масштаб: 4000 байт/сек");
+    scaleBox->addItem("Масштаб: 12000 байт/сек");
+    scaleBox->setCurrentIndex(1);
+    ptb->addWidget(scaleBox);
+    connect(scaleBox, &QComboBox::currentIndexChanged, this, [this](int index){
+        QList<QAbstractAxis*> axesY = m_chart->axes(Qt::Vertical);
+        QValueAxis *axisY = qobject_cast<QValueAxis*>(axesY.first());
+        if (!axisY) return;
+        switch(index){
+            case 0: axisY->setRange(0, 1000);  break;
+            case 1: axisY->setRange(0, 4000);  break;
+            case 2: axisY->setRange(0, 12000); break;
+        }
+    });
+
+
+    return ptb;
 }

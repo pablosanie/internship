@@ -38,10 +38,13 @@ private:
     int m_period;
     int m_percent;
     qint32 m_size;
+    QAction *m_connectAction;
+    QAction *m_generatorAction;
     void populatePorts();
     void setupChart();
     long m_txBytesCount;
     long m_lastTxBytes;
+    QToolBar* createToolBar();
 private slots:
     void onConnectClicked();
     void onReadyRead();
