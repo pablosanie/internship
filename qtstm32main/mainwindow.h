@@ -45,6 +45,8 @@ private:
     long m_txBytesCount;
     long m_lastTxBytes;
     QToolBar* createToolBar();
+    int m_baudRate;
+    QComboBox *m_scaleBox;
 private slots:
     void onConnectClicked();
     void onReadyRead();
@@ -57,5 +59,6 @@ private slots:
     void onpercentBoxChanged(int value);
     void onsizeBoxChanged(int value);
     void onChartContextMenu(const QPoint &pos);
+    void speedBox(int index);
 };
 #endif // MAINWINDOW_H

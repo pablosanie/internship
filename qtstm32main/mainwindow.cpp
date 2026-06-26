@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_size(50)
     , m_txBytesCount(0)
     , m_lastTxBytes(0)
+    , m_baudRate(115200)
 
 {
     ui->setupUi(this);
@@ -37,7 +38,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->sizeBox->setMinimum(0);
     ui->sizeBox->setMaximum(4096);
     ui->sizeBox->setValue(50);
+    ui->speedComboBox->addItem("9600", 9600);
+    ui->speedComboBox->addItem("19200", 19200);
+    ui->speedComboBox->addItem("38400", 38400);
+    ui->speedComboBox->addItem("57600", 57600);
+    ui->speedComboBox->addItem("115200", 115200);
 
+    ui->speedComboBox->setCurrentIndex(4);
     populatePorts();
     setupChart();
     connect(m_uart->getSerial(), &QSerialPort::readyRead,
@@ -54,6 +61,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->periodBox, &QSpinBox::valueChanged, this, &MainWindow::onperiodBoxChanged);
     connect(ui->perBox, &QSpinBox::valueChanged, this, &MainWindow::onpercentBoxChanged);
     connect(ui->sizeBox, &QSpinBox::valueChanged, this, &MainWindow::onsizeBoxChanged);
+    connect(ui->speedComboBox, &QComboBox::currentIndexChanged, this, &MainWindow::speedBox);
 
     addToolBar(Qt::TopToolBarArea, createToolBar());
 }
@@ -188,7 +196,7 @@ void MainWindow::onConnectClicked(){
         return;
     }
     QString port = ui->portComboBox->currentText();
-    if (m_uart->connect(port, 115200))
+    if (m_uart->connect(port, m_baudRate))
     {
         ui->connectButton->setText("Отключить");
         m_connectAction->setText("Отключить");
@@ -252,12 +260,18 @@ void MainWindow::onChartContextMenu(const QPoint &pos)
         m_chart->axes(Qt::Vertical).first());
     if (!axisY) return;
 
-    if (selected == action1000)
+    if (selected == action1000){
         axisY->setRange(0, 1000);
-    else if (selected == action4000)
+        m_scaleBox->setCurrentIndex(0);
+    }
+    else if (selected == action4000){
         axisY->setRange(0, 4000);
-    else if (selected == action12000)
+        m_scaleBox->setCurrentIndex(1);
+    }
+    else if (selected == action12000){
         axisY->setRange(0, 12000);
+        m_scaleBox->setCurrentIndex(2);
+    }
 }
 
 QToolBar* MainWindow::createToolBar(){
@@ -266,13 +280,13 @@ QToolBar* MainWindow::createToolBar(){
     m_generatorAction = ptb->addAction("Генератор (включить)", this, &MainWindow::onGeneratorClicked);
     ptb->addAction("Отправить пакет", this, &MainWindow::onStringGeneratorClicked);
     ptb->addSeparator();
-    QComboBox *scaleBox = new QComboBox(ptb);
-    scaleBox->addItem("Масштаб: 1000 байт/сек");
-    scaleBox->addItem("Масштаб: 4000 байт/сек");
-    scaleBox->addItem("Масштаб: 12000 байт/сек");
-    scaleBox->setCurrentIndex(1);
-    ptb->addWidget(scaleBox);
-    connect(scaleBox, &QComboBox::currentIndexChanged, this, [this](int index){
+    m_scaleBox = new QComboBox(ptb);
+    m_scaleBox->addItem("Масштаб: 1000 байт/сек");
+    m_scaleBox->addItem("Масштаб: 4000 байт/сек");
+    m_scaleBox->addItem("Масштаб: 12000 байт/сек");
+    m_scaleBox->setCurrentIndex(1);
+    ptb->addWidget(m_scaleBox);
+    connect(m_scaleBox, &QComboBox::currentIndexChanged, this, [this](int index){
         QList<QAbstractAxis*> axesY = m_chart->axes(Qt::Vertical);
         QValueAxis *axisY = qobject_cast<QValueAxis*>(axesY.first());
         if (!axisY) return;
@@ -285,4 +299,25 @@ QToolBar* MainWindow::createToolBar(){
 
 
     return ptb;
+}
+void MainWindow::speedBox(int index){
+    m_baudRate = ui->speedComboBox->itemData(index).toInt();
+    qDebug() << m_baudRate;
+    if (m_uart->isConnected()) {
+        QString currentPort = ui->portComboBox->currentText();
+        m_uart->disconnect();
+        m_timer->stop();
+        ui->connectButton->setText("Подключить");
+        m_connectAction->setText("Подключить");
+
+        // Автоматически переподключаемся с новой скоростью
+        if (m_uart->connect(currentPort, m_baudRate)) {
+            ui->connectButton->setText("Отключить");
+            m_connectAction->setText("Отключить");
+            m_timer->start(1000);
+            qDebug() << "Переподключено к порту:" << currentPort << "со скоростью:" << m_baudRate;
+        } else {
+            qDebug() << "Ошибка переподключения:" << m_uart->getSerial()->errorString();
+        }
+    }
 }

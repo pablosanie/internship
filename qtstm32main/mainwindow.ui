@@ -261,6 +261,9 @@
          <widget class="QComboBox" name="portComboBox"/>
         </item>
         <item>
+         <widget class="QComboBox" name="speedComboBox"/>
+        </item>
+        <item>
          <widget class="QPushButton" name="connectButton">
           <property name="text">
            <string>Подключить</string>

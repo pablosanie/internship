@@ -67,6 +67,7 @@ public:
     QSpacerItem *verticalSpacer;
     QHBoxLayout *horizontalLayout_2;
     QComboBox *portComboBox;
+    QComboBox *speedComboBox;
     QPushButton *connectButton;
     QChartView *graph;
     QMenuBar *menubar;
@@ -254,6 +255,11 @@ public:
         portComboBox->setObjectName("portComboBox");
 
         horizontalLayout_2->addWidget(portComboBox);
+
+        speedComboBox = new QComboBox(centralwidget);
+        speedComboBox->setObjectName("speedComboBox");
+
+        horizontalLayout_2->addWidget(speedComboBox);
 
         connectButton = new QPushButton(centralwidget);
         connectButton->setObjectName("connectButton");
