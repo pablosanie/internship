@@ -64,6 +64,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->speedComboBox, &QComboBox::currentIndexChanged, this, &MainWindow::speedBox);
 
     addToolBar(Qt::TopToolBarArea, createToolBar());
+
+
 }
 
 MainWindow::~MainWindow()
@@ -163,6 +165,7 @@ void MainWindow::onStringGeneratorClicked(){
     }
     QByteArray packet;
     packet.resize(m_size);
+    //packet_temp.resize(m_size);
     for (int i = 0; i < m_size; i++){
         packet[i] = (char)QRandomGenerator::global()->bounded(33, 127);
     }
