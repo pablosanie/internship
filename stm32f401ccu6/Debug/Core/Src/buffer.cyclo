@@ -1,0 +1,5 @@
+../Core/Src/buffer.c:3:6:RingBuffer_Init	1
+../Core/Src/buffer.c:9:6:RingBuffer_Put	2
+../Core/Src/buffer.c:20:6:RingBuffer_Get	2
+../Core/Src/buffer.c:29:6:RingBuffer_HasData	2
+../Core/Src/buffer.c:38:10:RingBuffer_Count	2
