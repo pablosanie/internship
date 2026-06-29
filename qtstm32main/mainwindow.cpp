@@ -7,16 +7,22 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , m_uart(new UartInterface())
-    , m_timer(new QTimer(this))
-    , m_generatorTimer(new QTimer(this))
-    , m_timeCounter(0)
-    , m_period(100)
-    , m_percent(50)
+    , m_connectAction(nullptr)
+    , m_generatorAction(nullptr)
+    , m_scaleBox(nullptr)
+    , m_series(nullptr)
+    , m_seriesRx(nullptr)
+    , m_chart(nullptr)
     , m_size(50)
+    , m_timeCounter(0)
     , m_txBytesCount(0)
     , m_lastTxBytes(0)
+    , m_uart(new UartInterface())
+    , m_timer(new QTimer(this))
     , m_baudRate(115200)
+    , m_period(100)
+    , m_percent(50)
+    , m_generatorTimer(new QTimer(this))
 
 {
     ui->setupUi(this);
@@ -38,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->sizeBox->setMinimum(0);
     ui->sizeBox->setMaximum(4096);
     ui->sizeBox->setValue(50);
+
     ui->speedComboBox->addItem("9600", 9600);
     ui->speedComboBox->addItem("19200", 19200);
     ui->speedComboBox->addItem("38400", 38400);
@@ -45,8 +52,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->speedComboBox->addItem("115200", 115200);
 
     ui->speedComboBox->setCurrentIndex(4);
+
     populatePorts();
     setupChart();
+
     connect(m_uart->getSerial(), &QSerialPort::readyRead,
             this, &MainWindow::onReadyRead);
     connect(ui->connectButton, &QPushButton::clicked,

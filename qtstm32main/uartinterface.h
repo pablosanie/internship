@@ -15,7 +15,7 @@ public:
     long getBufferedCount() const override;
     long getSpeed() const override;
     QSerialPort* getSerial() const;
-    // специфично  е для UART
+    // специфичное для UART
     void parseData(const QString &line);
 
 private:

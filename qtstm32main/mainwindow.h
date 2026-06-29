@@ -8,6 +8,7 @@
 #include <QComboBox>
 #include <QSerialPortInfo>
 #include <QTimer>
+#include <QRandomGenerator>
 #include "uartinterface.h"
 
 
@@ -26,27 +27,36 @@ public:
     ~MainWindow() override;
 
 private:
+    // --- UI ---
     Ui::MainWindow *ui;
+    QAction *m_connectAction;
+    QAction *m_generatorAction;
+    QComboBox *m_scaleBox;
+
+    // --- График ---
     QLineSeries *m_series;
     QLineSeries *m_seriesRx; // приём
     QChart *m_chart;
-    QChartView *m_charView;
-    UartInterface *m_uart;
-    QTimer *m_timer;
-    QTimer *m_generatorTimer;
-    qint64 m_timeCounter;
+    qint32 m_size;
+    qint64 m_timeCounter; // счётчик времени (x)
+
+    long m_txBytesCount;
+    long m_lastTxBytes; // разница этих 2 показатель это скорость отправки в 1 секунду
+
+    // -- UART ---
+    UartInterface *m_uart; // интерфейс Uart
+    QTimer *m_timer; // таймер между приёмами статистики
+    int m_baudRate; // передаваемый baudRate из scaleBox
+
+    // --- Параметры генератора ---
     int m_period;
     int m_percent;
-    qint32 m_size;
-    QAction *m_connectAction;
-    QAction *m_generatorAction;
+    QTimer *m_generatorTimer; // таймер для генератора
+
+    // --- Методы ---
     void populatePorts();
     void setupChart();
-    long m_txBytesCount;
-    long m_lastTxBytes;
     QToolBar* createToolBar();
-    int m_baudRate;
-    QComboBox *m_scaleBox;
 private slots:
     void onConnectClicked();
     void onReadyRead();
