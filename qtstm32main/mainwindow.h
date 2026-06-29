@@ -27,13 +27,13 @@ public:
     ~MainWindow() override;
 
 private:
-    // --- UI ---
+    // --- UI --
     Ui::MainWindow *ui;
     QAction *m_connectAction;
     QAction *m_generatorAction;
     QComboBox *m_scaleBox;
 
-    // --- График ---
+    // -- График ---
     QLineSeries *m_series;
     QLineSeries *m_seriesRx; // приём
     QChart *m_chart;
@@ -54,21 +54,21 @@ private:
     QTimer *m_generatorTimer; // таймер для генератора
 
     // --- Методы ---
-    void populatePorts();
-    void setupChart();
-    QToolBar* createToolBar();
+    void populatePorts(); // распознать устройства
+    void setupChart(); // создать график
+    QToolBar* createToolBar(); // создать ToolBar. Инициализация внутри метода
 private slots:
-    void onConnectClicked();
-    void onReadyRead();
-    void onTimer();
-    void onSendClicked();
-    void onGeneratorClicked();
-    void onStringGeneratorClicked();
-    void onGeneratorTimer();
-    void onperiodBoxChanged(int value);
-    void onpercentBoxChanged(int value);
-    void onsizeBoxChanged(int value);
-    void onChartContextMenu(const QPoint &pos);
-    void speedBox(int index);
+    void onConnectClicked(); // соединиться с UART
+    void onReadyRead(); // чтение данных и обновление показателей (в т.ч. кривая скорости от STM32)
+    void onTimer(); // сдвиг во времени и кривая скорости согласно Qt
+    void onSendClicked(); // отправка своего сообщения
+    void onGeneratorClicked(); // вкл/выкл генератора байт
+    void onStringGeneratorClicked(); // отправка массива (строки) генератором из рандомных символов
+    void onGeneratorTimer(); //
+    void onperiodBoxChanged(int value); // выбор периода отправки 1го байт генератором
+    void onpercentBoxChanged(int value); // выбор % шанса того, что генератор отправит 1 байт
+    void onsizeBoxChanged(int value); // выбор размера отправляемого массива (строки)
+    void onChartContextMenu(const QPoint &pos); // выбор масштаба графика
+    void speedBox(int index); // выбор скорости отправки данных
 };
 #endif // MAINWINDOW_H

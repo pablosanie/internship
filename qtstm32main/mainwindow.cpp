@@ -224,19 +224,19 @@ void MainWindow::onConnectClicked(){
 
 void MainWindow::onReadyRead(){
     static QByteArray buffer;
-    buffer += m_uart->getSerial()->readAll();
+    buffer += m_uart->getSerial()->readAll(); // добавляем данные с юарта в буффер
 
-    while(buffer.contains('\n')){
+    while(buffer.contains('\n')){ // проверяем перенос строки, т.к. статистика отправляется с \n
         int idx = buffer.indexOf('\n');
-        QString line = QString::fromUtf8((buffer.left(idx)).trimmed());
-        buffer.remove(0, idx + 1);
+        QString line = QString::fromUtf8((buffer.left(idx)).trimmed()); // берём строку до idx, без пробелов в начале и конце строки
+        buffer.remove(0, idx + 1); // чистим буффер idx символов и \n
 
         if (!line.isEmpty()){
-            m_uart->parseData(line);
+            m_uart->parseData(line); // парсинг
             ui->lcdNumber->display((double)m_uart->getByteCount());
             ui->lcdNumber_2->display((double)m_uart->getOverflowCount());
             ui->lcdNumber_3->display((double)m_uart->getBufferedCount());
-            m_series->append(m_timeCounter, m_uart->getSpeed());
+            m_series->append(m_timeCounter, m_uart->getSpeed()); // график скорости от STM32 (x, y)
         }
     }
 }
@@ -250,8 +250,7 @@ void MainWindow::onSendClicked()
     }
 
     QString text = ui->inputLineEdit->text();
-    if (text.isEmpty())
-        return;
+    if (text.isEmpty()) return;
 
     m_uart->sendData(text.toUtf8());
     m_txBytesCount += text.toUtf8().size();

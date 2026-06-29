@@ -5,18 +5,21 @@
 class UartInterface : public SerialInterface {
 public:
     UartInterface();
-    bool connect(const QString &port, int baudRate) override;
-    void disconnect() override;
-    bool isConnected() const override;
-    void sendData(const QByteArray &data) override;
 
+    bool connect(const QString &port, int baudRate) override; // соединить
+    void disconnect() override; // отключить
+    bool isConnected() const override; // проверка на соединение
+    void sendData(const QByteArray &data) override; // отправить
+
+    // --- Геттеры ---
     long getByteCount() const override;
     long getOverflowCount() const override;
     long getBufferedCount() const override;
     long getSpeed() const override;
     QSerialPort* getSerial() const;
-    // специфичное для UART
-    void parseData(const QString &line);
+
+    // --- Специфичное для UART ---
+    void parseData(const QString &line); // получить статистику метод парсинга
 
 private:
     QSerialPort *m_serial;

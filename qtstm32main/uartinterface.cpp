@@ -8,7 +8,7 @@ UartInterface::UartInterface()
     , m_speed(0)
 {}
 
-bool UartInterface::connect(const QString &port, int baudRate)
+bool UartInterface::connect(const QString &port, int baudRate) // подключить
 {
     m_serial->setPortName(port);
     m_serial->setBaudRate(baudRate);
@@ -18,18 +18,18 @@ bool UartInterface::connect(const QString &port, int baudRate)
     return m_serial->open(QIODevice::ReadWrite);
 }
 
-void UartInterface::disconnect()
+void UartInterface::disconnect() // отключить
 {
     if (m_serial->isOpen())
         m_serial->close();
 }
 
-bool UartInterface::isConnected() const
+bool UartInterface::isConnected() const // проверка соединения
 {
     return m_serial->isOpen();
 }
 
-void UartInterface::sendData(const QByteArray &data)
+void UartInterface::sendData(const QByteArray &data) // отправка данных
 {
     if (m_serial->isOpen())
         m_serial->write(data);
@@ -42,13 +42,13 @@ long UartInterface::getSpeed() const { return m_speed; }
 
 void UartInterface::parseData(const QString &line)
 {
-    auto extract = [&](const QString &key) -> long {
-        int start = line.indexOf(key);
-        if (start == -1) return -1;
-        start += key.length();
-        int end = line.indexOf(',', start);
+    auto extract = [&](const QString &key) -> long { // лямбда-функция для извлечения значений из строки
+        int start = line.indexOf(key); // ищем ключ
+        if (start == -1) return -1; // отрицательные значения не идут в статистику
+        start += key.length(); // убираем сам ключ из передаваемого значения
+        int end = line.indexOf(',', start); // находим конец передаваемого значения
         if (end == -1) end = line.indexOf(']', start);
-        return line.mid(start, end - start).toLong();
+        return line.mid(start, end - start).toLong(); // (позиция начала, длина)
     };
 
     long byteCount = extract("rx_byte_count=");
@@ -62,6 +62,6 @@ void UartInterface::parseData(const QString &line)
     if (buffered >= 0)  m_bufferedCount = buffered;
 }
 
-QSerialPort* UartInterface::getSerial() const {
+QSerialPort* UartInterface::getSerial() const { // доступ к QSerialPort
     return m_serial;
 }
