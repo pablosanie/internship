@@ -164,15 +164,15 @@ int main(void)
       {
           last_stat_tick = HAL_GetTick();
 
-          char stat[96];
+          char stat[64];
           unsigned long gbc = (unsigned long)UART_App_GetByteCount();
           unsigned long goc = (unsigned long)UART_App_GetOverflowCount();
           unsigned long spd = (unsigned long)UART_App_GetSpeed();
-          unsigned long tlp = (unsigned long)UART_App_GetTimeFromLastByte();
+          // unsigned long tlp = (unsigned long)UART_App_GetTimeFromLastByte();
           unsigned long buf = (unsigned long)UART_App_GetBufferedCount();
           int len = sprintf(stat,
-              "[rx_byte_count=%lu,overflow=%lu,speed=%lu,time=%lu,buffered=%lu]\r\n",
-              gbc, goc, spd, tlp, buf);
+              "[rx_byte_count=%lu,overflow=%lu,speed=%lu,buffered=%lu]\r\n",
+              gbc, goc, spd, buf);
           HAL_UART_Transmit(&huart1, (uint8_t *)stat, len, HAL_MAX_DELAY);
       }
 

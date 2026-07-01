@@ -3,6 +3,5 @@
 ../Core/Src/uart_app.c:26:10:UART_App_GetByteCount	4	static
 ../Core/Src/uart_app.c:31:10:UART_App_GetOverflowCount	4	static
 ../Core/Src/uart_app.c:35:6:HAL_UART_RxCpltCallback	16	static
-../Core/Src/uart_app.c:48:10:UART_App_GetSpeed	16	static
-../Core/Src/uart_app.c:72:10:UART_App_GetTimeFromLastByte	16	static
+../Core/Src/uart_app.c:48:10:UART_App_GetSpeed	24	static
 ../Core/Src/uart_app.c:83:10:UART_App_GetBufferedCount	4	static
